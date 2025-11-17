@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -56,6 +55,15 @@ class UserController extends Controller
             }
         } catch (ValidationException $th) {
             return ResponseHelper::make(400, 'error', $th->getMessage());
+        } catch (\Throwable $th) {
+            return ResponseHelper::make(400, 'error', 'Something went wrong');
+        }
+    }
+
+    public function user() {
+        try {
+            $user = Auth::user();
+            return ResponseHelper::make(200, 'success', 'Success', $user);
         } catch (\Throwable $th) {
             return ResponseHelper::make(400, 'error', 'Something went wrong');
         }
