@@ -2,9 +2,12 @@ import axios from "axios"
 import { defineStore } from "pinia"
 import { reactive, computed } from "vue"
 import { useRouter } from "vue-router"
+import { useToast } from "vue-toastification"
 
 const useAuthStore = defineStore("auth", () => {
     const router = useRouter()
+    const toast = useToast()
+
     const state = reactive({
         credentials: {
             email: "",
@@ -25,24 +28,46 @@ const useAuthStore = defineStore("auth", () => {
         if (res?.code == 200) {
             state.user = res.data
             router.push({ name: "home" })
+            toast.success(res.message)
             return true
+        }
+
+        if (!res?.data) {
+            toast.error(res.message)
+            return false
+        }
+
+        for (const field in res.data) {
+            toast.error(res.data[field].join("\n"))
         }
 
         return false
     }
 
     async function login() {
-        const result = await axios.post("http://localhost:8000/api/login", state.credentials, {
+        const res = await axios.post("http://localhost:8000/api/login", state.credentials, {
             withCredentials: true
         })
             .then(response => response.data)
             .catch(error => error.response.data)
 
         state.credentials.password = ""
-        if (result?.code == 200) {
-            state.user = result.data
+
+        if (res?.code == 200) {
+            state.user = res.data
             state.credentials.email = ""
+            toast.info(res.message)
             router.push({ name: "home" })
+            return
+        }
+
+        if (!res?.data) {
+            toast.error(res.message)
+            return
+        }
+
+        for (const field in res.data) {
+            toast.error(res.data[field].join("\n"))
         }
     }
 
@@ -69,7 +94,10 @@ const useAuthStore = defineStore("auth", () => {
 
         if (res?.code == 200 || res?.code == 401) {
             state.user = null
+            toast.info(res.message)
             router.push({ name: "login" })
+        } else {
+            toast.error(res.message)
         }
     }
 
