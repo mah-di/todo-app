@@ -28,7 +28,7 @@ defineEmits(["update:modelValue"]);
             {{ label }}
         </label>
         <input :value="modelValue" :type="inputType" :id="inputName" :name="inputName"
-            class="border rounded w-full py-2 px-3" :placeholder="placeholder" :required="required"
+            class="border border-violet-200 focus:outline focus:outline-violet-300 rounded w-full py-2 px-3" :placeholder="placeholder" :required="required"
             @change="$emit('update:modelValue', $event.target.value)" />
     </div>
 </template>

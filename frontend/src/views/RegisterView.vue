@@ -14,8 +14,7 @@ const data = reactive({
     password_confirmation: ""
 })
 
-async function register(e) {
-    e.preventDefault()
+async function register() {
     const res = await authStore.register(data)
 
     if (!res) {
@@ -31,11 +30,11 @@ async function register(e) {
             <h1 class="text-2xl font-bold text-gray-900 ">Register</h1>
         </div>
         <div class="flex items-center bg-violet-100">
-            <form class="w-full px-16" :onSubmit="register">
-                <TextInput v-model="data.name" inputName="name" inputType="text" placeholder="Your Full Name" />
-                <TextInput v-model="data.email" inputName="email" inputType="email" placeholder="example@mail.com" />
-                <TextInput v-model="data.password" inputName="password" inputType="password" placeholder="Password" />
-                <TextInput v-model="data.password_confirmation" inputName="password_confirmation" inputType="password" placeholder="Password Confirmation" />
+            <form class="w-full px-16" @submit.prevent="register">
+                <TextInput v-model="data.name" inputName="name" inputType="text" placeholder="Your Full Name" :required="true" />
+                <TextInput v-model="data.email" inputName="email" inputType="email" placeholder="example@mail.com" :required="true" />
+                <TextInput v-model="data.password" inputName="password" inputType="password" placeholder="Password" :required="true" />
+                <TextInput v-model="data.password_confirmation" inputName="password_confirmation" inputType="password" placeholder="Password Confirmation" :required="true" />
                 <SubmitButton label="Register" />
             </form>
         </div>

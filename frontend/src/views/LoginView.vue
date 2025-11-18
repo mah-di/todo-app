@@ -5,11 +5,6 @@ import useAuthStore from '@/stores/AuthStore.js'
 
 const authStore = useAuthStore()
 
-async function login(e) {
-    e.preventDefault()
-    await authStore.login()
-}
-
 </script>
 
 <template>
@@ -18,11 +13,11 @@ async function login(e) {
             <h1 class="text-2xl font-bold text-gray-900 ">Login</h1>
         </div>
         <div class="flex items-center bg-violet-100">
-            <form class="w-full px-16" :onSubmit="login">
+            <form class="w-full px-16" @submit.prevent="authStore.login">
                 <TextInput v-model="authStore.state.credentials.email" inputName="email" inputType="email"
-                    placeholder="example@mail.com" />
+                    placeholder="example@mail.com" :required="true" />
                 <TextInput v-model="authStore.state.credentials.password" inputName="password" inputType="password"
-                    placeholder="Password" />
+                    placeholder="Password" :required="true" />
                 <SubmitButton label="Login" />
             </form>
         </div>
