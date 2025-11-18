@@ -30,7 +30,7 @@ class UserController extends Controller
 
             return ResponseHelper::make(200, 'success', 'Registration successful', $user);
         } catch (ValidationException $th) {
-            return ResponseHelper::make(400, 'error', $th->getMessage());
+            return ResponseHelper::make(400, 'error', $th->getMessage(), $th->errors());
         } catch (\Throwable $th) {
             return ResponseHelper::make(400, 'error', 'Something went wrong');
         }
@@ -54,7 +54,7 @@ class UserController extends Controller
                 return ResponseHelper::make(401, 'error', 'Invalid credentials');
             }
         } catch (ValidationException $th) {
-            return ResponseHelper::make(400, 'error', $th->getMessage());
+            return ResponseHelper::make(400, 'error', $th->getMessage(), $th->errors());
         } catch (\Throwable $th) {
             return ResponseHelper::make(400, 'error', 'Something went wrong');
         }
