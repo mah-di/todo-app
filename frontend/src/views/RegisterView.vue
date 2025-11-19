@@ -29,13 +29,43 @@ async function register() {
         <div class="flex items-center justify-center bg-violet-50">
             <h1 class="text-2xl font-bold text-gray-900 ">Register</h1>
         </div>
+
         <div class="flex items-center bg-violet-100">
-            <form class="w-full px-16" @submit.prevent="register">
-                <TextInput v-model="data.name" inputName="name" inputType="text" placeholder="Your Full Name" :required="true" />
-                <TextInput v-model="data.email" inputName="email" inputType="email" placeholder="example@mail.com" :required="true" />
-                <TextInput v-model="data.password" inputName="password" inputType="password" placeholder="Password" :required="true" />
-                <TextInput v-model="data.password_confirmation" inputName="password_confirmation" inputType="password" placeholder="Password Confirmation" :required="true" />
-                <SubmitButton label="Register" />
+            <form
+                @submit.prevent="register"
+                class="w-full px-16"
+            >
+                <TextInput
+                    v-model="data.name"
+                    inputName="name"
+                    inputType="text"
+                    placeholder="Your Full Name"
+                    :required="true"
+                />
+                <TextInput
+                    v-model="data.email"
+                    inputName="email"
+                    inputType="email"
+                    placeholder="example@mail.com"
+                    :required="true"
+                />
+                <TextInput
+                    v-model="data.password"
+                    inputName="password"
+                    inputType="password"
+                    placeholder="Password"
+                    :required="true"
+                />
+                <TextInput
+                    v-model="data.password_confirmation"
+                    inputName="password_confirmation"
+                    inputType="password"
+                    placeholder="Password Confirmation"
+                    :required="true"
+                />
+                <SubmitButton
+                    label="Register"
+                />
             </form>
         </div>
     </div>

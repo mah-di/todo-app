@@ -1,8 +1,9 @@
-import axios from "axios"
-import { defineStore } from "pinia"
 import { reactive, computed } from "vue"
 import { useRouter } from "vue-router"
 import { useToast } from "vue-toastification"
+import { defineStore } from "pinia"
+import axios from "axios"
+import { handleValidationErrorToast } from "@/utils/helpers"
 
 const useAuthStore = defineStore("auth", () => {
     const router = useRouter()
@@ -19,9 +20,7 @@ const useAuthStore = defineStore("auth", () => {
     const isAuthenticated = computed(() => !!state.user)
 
     async function register(data) {
-        const res = await axios.post("http://localhost:8000/api/register", data, {
-            withCredentials: true
-        })
+        const res = await axios.post("register", data)
             .then(response => response.data)
             .catch(error => error.response.data)
 
@@ -32,22 +31,13 @@ const useAuthStore = defineStore("auth", () => {
             return true
         }
 
-        if (!res?.data) {
-            toast.error(res.message)
-            return false
-        }
-
-        for (const field in res.data) {
-            toast.error(res.data[field].join("\n"))
-        }
+        handleValidationErrorToast(res, toast)
 
         return false
     }
 
     async function login() {
-        const res = await axios.post("http://localhost:8000/api/login", state.credentials, {
-            withCredentials: true
-        })
+        const res = await axios.post("login", state.credentials)
             .then(response => response.data)
             .catch(error => error.response.data)
 
@@ -61,20 +51,11 @@ const useAuthStore = defineStore("auth", () => {
             return
         }
 
-        if (!res?.data) {
-            toast.error(res.message)
-            return
-        }
-
-        for (const field in res.data) {
-            toast.error(res.data[field].join("\n"))
-        }
+        handleValidationErrorToast(res, toast)
     }
 
     async function check() {
-        const res = await axios.get("http://localhost:8000/api/user", {
-            withCredentials: true
-        })
+        const res = await axios.get("user")
             .then(response => response.data)
             .catch(error => error.response.data)
 
@@ -86,9 +67,7 @@ const useAuthStore = defineStore("auth", () => {
     }
 
     async function logout() {
-        const res = await axios.post('http://localhost:8000/api/logout', {}, {
-            withCredentials: true
-        })
+        const res = await axios.post('logout')
             .then(response => response.data)
             .catch(error => error.response.data)
 
